@@ -11,6 +11,17 @@ import reactor.core.publisher.Mono;
 
 import java.util.Set;
 
+// For simple header manipulation, use route-specific filters.
+// Global filters are useful when the logic is shared across all routes and not specific to any single service or endpoint.
+// In Spring Cloud Gateway, a prefilter refers to logic that is executed before the request is routed to the target backend service
+// To create a global prefilter and postfilter, you need to implement the GlobalFilter interface and optionally use Ordered to set execution priority.
+
+
+// Spring can distinguish between postfilter and prefilter with the return value of filter() method
+// In postfilter method the return value looks like this
+//   return chain.filter(exchange).then(Mono.fromRunnable(()->{
+//            logger.info("My first pre-filter is executed");
+//        }));
 @Component
 public class MyPreFilter implements GlobalFilter {
 
