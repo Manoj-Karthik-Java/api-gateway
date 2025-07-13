@@ -1,4 +1,4 @@
-package security;
+package com.appsdeveloperblog.photoapp.api.ApiGateway.security;
 
 import io.jsonwebtoken.JwtParser;
 import io.jsonwebtoken.Jwts;
@@ -22,12 +22,12 @@ import java.util.Base64;
 // If we want to build a custom filter we need to extend AbstractGatewayFilterFactory, which is how filters are built in Spring Cloud Gateway.
 
 @Component
-public class AuthorizationHeaderFilter extends AbstractGatewayFilterFactory<AuthorizationHeaderFilter.Config> {
+public class AuthorizationHeaderGatewayFilter extends AbstractGatewayFilterFactory<AuthorizationHeaderGatewayFilter.Config> {
 
     Environment env;
 
     @Autowired
-    public AuthorizationHeaderFilter(Environment env) {
+    public AuthorizationHeaderGatewayFilter(Environment env) {
         super(Config.class);
         this.env = env;
     }
@@ -57,7 +57,7 @@ public class AuthorizationHeaderFilter extends AbstractGatewayFilterFactory<Auth
                 return onError(exchange, "No Authorization Header", HttpStatus.UNAUTHORIZED);
 
             String authorizationHeader = serverHttpRequest.getHeaders().get(HttpHeaders.AUTHORIZATION).get(0);
-            String jwt = authorizationHeader.replace("Bearer", "");
+            String jwt = authorizationHeader.replace("Bearer ", "");
 
             if(!isJwtValid(jwt))
                 return onError(exchange,"JWT token is not valid",HttpStatus.UNAUTHORIZED);
